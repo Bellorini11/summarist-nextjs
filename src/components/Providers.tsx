@@ -158,16 +158,9 @@ function AuthModal() {
     setMode(nextMode);
     setError("");
     setSuccess("");
-
-    if (nextMode === "register") {
-      setEmail("example@gmail.com");
-      setPassword("Example123");
-      setConfirmPassword("Example123");
-    } else {
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-    }
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   }
 
   function closeModal() {
