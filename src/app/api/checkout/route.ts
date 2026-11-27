@@ -28,11 +28,11 @@ export async function POST(request: NextRequest) {
         { status: 503 },
       );
 
-    const origin = process.env.APP_URL;
-
-    if (!origin) {
-      throw new Error("APP_URL is missing");
-    }
+    const origin =
+      process.env.APP_URL?.trim() ||
+      (process.env.VERCEL === "1"
+        ? "https://summarist-nextjs.vercel.app"
+        : "http://localhost:3000");
 
     const parsedUrl = new URL(origin);
 
