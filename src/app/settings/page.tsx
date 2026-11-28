@@ -17,11 +17,31 @@ export default function Settings() {
   if (loading || premiumLoading) {
     return (
       <div
-        className="flex min-h-[60vh] items-center justify-center"
+        className="mx-auto max-w-3xl"
         role="status"
         aria-label="Loading settings"
       >
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-emerald-500" />
+        <h1 className="mb-8 text-4xl font-black text-gray-900">Settings</h1>
+
+        <div className="animate-pulse space-y-8">
+          <section>
+            <h2 className="text-sm font-medium text-gray-500">
+              Your Subscription Plan
+            </h2>
+
+            <div className="mt-3 h-6 w-32 rounded bg-gray-200" />
+
+            <div className="mt-5 h-14 w-full max-w-md rounded-lg bg-gray-200" />
+          </section>
+
+          <hr className="border-gray-200" />
+
+          <section>
+            <h2 className="text-sm font-medium text-gray-500">Email</h2>
+
+            <div className="mt-3 h-6 w-full max-w-xs rounded bg-gray-200" />
+          </section>
+        </div>
       </div>
     );
   }
