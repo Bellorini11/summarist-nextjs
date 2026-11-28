@@ -46,10 +46,8 @@ export default function Settings() {
     );
   }
 
-  // Guests and signed-out visitors must log in.
-  const needsLogin = !user || user.isAnonymous;
-
-  if (needsLogin) {
+  // Only signed-out visitors must log in.
+  if (!user) {
     return (
       <div className="mx-auto flex min-h-[65vh] max-w-xl flex-col items-center justify-center px-4 text-center">
         <img
@@ -73,7 +71,21 @@ export default function Settings() {
     );
   }
 
-  // Registered members see their actual account details.
+  // Guests always have a Basic subscription.
+  const isGuest = user.isAnonymous;
+  const hasPremium = !isGuest && premium;
+
+  const plan = hasPremium
+    ? subscriptionPlan === "yearly"
+      ? "Premium Plus"
+      : "Premium"
+    : "Basic";
+
+  // Display the requested guest email without sharing Firebase accounts.
+  const email = isGuest
+    ? "guest@gmail.com"
+    : user.email || "No email associated with this account";
+
   return (
     <div className="mx-auto max-w-3xl">
       <h1 className="mb-8 text-4xl font-black text-gray-900">Settings</h1>
@@ -84,15 +96,9 @@ export default function Settings() {
             Your Subscription Plan
           </h2>
 
-          <p className="mt-2 text-xl font-bold text-gray-900">
-            {premium
-              ? subscriptionPlan === "yearly"
-                ? "Premium Plus"
-                : "Premium"
-              : "Basic"}
-          </p>
+          <p className="mt-2 text-xl font-bold text-gray-900">{plan}</p>
 
-          {!premium && (
+          {!hasPremium && (
             <Link
               href="/choose-plan"
               className="mt-5 flex w-full max-w-md items-center justify-center rounded-lg bg-emerald-400 px-6 py-4 font-bold text-gray-900 transition hover:bg-emerald-500"
@@ -108,7 +114,7 @@ export default function Settings() {
           <h2 className="text-sm font-medium text-gray-500">Email</h2>
 
           <p className="mt-2 break-all text-lg font-bold text-gray-900">
-            {user.email || "No email associated with this account"}
+            {email}
           </p>
         </section>
       </div>

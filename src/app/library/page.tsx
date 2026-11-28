@@ -29,7 +29,8 @@ export default function Library() {
   useEffect(() => {
     if (loading) return;
 
-    if (!user || user.isAnonymous || !db) {
+    // Allow registered users and authenticated guests.
+    if (!user || !db) {
       setBooks([]);
       setBusy(false);
       setError("");
@@ -40,6 +41,7 @@ export default function Library() {
     let cancelled = false;
     let activeController: AbortController | null = null;
 
+    setBooks([]);
     setBusy(true);
     setError("");
 
@@ -103,6 +105,7 @@ export default function Library() {
         if (cancelled) return;
 
         activeController?.abort();
+        setBooks([]);
         setError("Unable to load library. Check Firestore permissions.");
         setBusy(false);
       },
@@ -119,7 +122,8 @@ export default function Library() {
     return <div className="skeleton h-56" />;
   }
 
-  if (!user || user.isAnonymous) {
+  // Only signed-out visitors must log in.
+  if (!user) {
     return (
       <div className="panel p-8 text-center">
         <h1 className="text-3xl font-bold">Your library</h1>

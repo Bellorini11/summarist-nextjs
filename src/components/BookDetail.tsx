@@ -105,7 +105,7 @@ export default function BookDetail({ id }: { id: string }) {
     setIsSaved(false);
     setSaving(false);
 
-    if (!user || user.isAnonymous || !db) return;
+    if (!user || !db) return;
 
     const bookRef = doc(db, "customers", user.uid, "library", id);
 
@@ -137,14 +137,14 @@ export default function BookDetail({ id }: { id: string }) {
 
   // Open Read or Listen
   function enter(mode: "read" | "listen") {
-    if (!user || user.isAnonymous) {
+    if (!user) {
       openLogin();
       return;
     }
 
     if (premiumLoading) return;
 
-    if (book?.subscriptionRequired && !premium) {
+    if (book?.subscriptionRequired && (user.isAnonymous || !premium)) {
       router.push("/choose-plan");
       return;
     }
@@ -154,7 +154,7 @@ export default function BookDetail({ id }: { id: string }) {
 
   // Save to My Library with immediate visual feedback
   async function save() {
-    if (!user || user.isAnonymous) {
+    if (!user) {
       openLogin();
       return;
     }

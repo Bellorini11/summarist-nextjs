@@ -169,14 +169,15 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           )}
         </nav>
 
-        {/* Anonymous visitors are guests, not registered accounts. */}
+        {/* Registered users and authenticated guests can log out. */}
         <div className="mt-1">
           <button
             type="button"
             disabled={loading}
             onClick={async () => {
               setMenu(false);
-              if (user && !user.isAnonymous) {
+
+              if (user) {
                 try {
                   await logout();
                 } catch (error) {
@@ -188,12 +189,9 @@ export default function Shell({ children }: { children: React.ReactNode }) {
             }}
             className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left hover:bg-gray-100 disabled:opacity-50"
           >
-            {user && !user.isAnonymous ? (
-              <LogOut size={19} />
-            ) : (
-              <LogIn size={19} />
-            )}
-            {user && !user.isAnonymous ? "Logout" : "Login"}
+            {user ? <LogOut size={19} /> : <LogIn size={19} />}
+
+            {user ? "Logout" : "Login"}
           </button>
         </div>
       </aside>
